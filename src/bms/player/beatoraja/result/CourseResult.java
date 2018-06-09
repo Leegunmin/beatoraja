@@ -29,17 +29,7 @@ public class CourseResult extends AbstractResult {
 		super(main);
 	}
 
-	public void create() {
-		final PlayerResource resource = main.getPlayerResource();
-		
-		for(int i = 0;i < REPLAY_SIZE;i++) {
-			saveReplay[i] = main.getPlayDataAccessor().existsReplayData(resource.getCourseBMSModels(),
-					resource.getPlayerConfig().getLnmode(), i ,resource.getConstraint()) ? ReplayStatus.EXIST : ReplayStatus.NOT_EXIST ;			
-		}
-
-		setSound(SOUND_CLEAR, "course_clear.wav", SoundType.SOUND,false);
-		setSound(SOUND_FAIL, "course_fail.wav", SoundType.SOUND, false);
-		setSound(SOUND_CLOSE, "course_close.wav", SoundType.SOUND, false);
+	public void createResult(PlayerResource resource) {
 
 		loadSkin(SkinType.COURSE_RESULT);
 
@@ -245,23 +235,7 @@ public class CourseResult extends AbstractResult {
 	public int getJudgeCount(int judge, boolean fast) {
 		final PlayerResource resource = main.getPlayerResource();
 		IRScoreData score = resource.getCourseScoreData();
-		if (score != null) {
-			switch (judge) {
-				case 0:
-					return fast ? score.getEpg() : score.getLpg();
-				case 1:
-					return fast ? score.getEgr() : score.getLgr();
-				case 2:
-					return fast ? score.getEgd() : score.getLgd();
-				case 3:
-					return fast ? score.getEbd() : score.getLbd();
-				case 4:
-					return fast ? score.getEpr() : score.getLpr();
-				case 5:
-					return fast ? score.getEms() : score.getLms();
-			}
-		}
-		return 0;
+		return scoreJudge(score, judge, fast);
 	}
 
 	public String getTextValue(int id) {
@@ -338,7 +312,7 @@ public class CourseResult extends AbstractResult {
 		super.dispose();
 	}
 
-	private void saveReplayData(int index) {
+	public void saveReplayData(int index) {
 		final PlayerResource resource = main.getPlayerResource();
 		if (resource.getPlayMode() == PlayMode.PLAY && resource.getCourseScoreData() != null) {
 			if (saveReplay[index] != ReplayStatus.SAVED && resource.isUpdateScore()) {
@@ -398,19 +372,6 @@ public class CourseResult extends AbstractResult {
 	}
 
 	public void executeClickEvent(int id, int arg) {
-		switch (id) {
-		case BUTTON_REPLAY:
-			saveReplayData(0);
-			break;
-		case BUTTON_REPLAY2:
-			saveReplayData(1);
-			break;
-		case BUTTON_REPLAY3:
-			saveReplayData(2);
-			break;
-		case BUTTON_REPLAY4:
-			saveReplayData(3);
-			break;
-		}
+		ClickResult(id);
 	}
 }

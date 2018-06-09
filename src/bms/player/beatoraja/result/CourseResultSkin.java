@@ -1,19 +1,16 @@
 package bms.player.beatoraja.result;
 
 import bms.player.beatoraja.Resolution;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
+import bms.player.beatoraja.skin.Skin;
 
-import bms.player.beatoraja.MainState;
-import bms.player.beatoraja.skin.*;
 
-import static bms.player.beatoraja.skin.SkinProperty.*;
-
+/**
+ * �꺁�궢�꺂�깉�궧�궘�꺍1
+ */
 public class CourseResultSkin extends Skin {
-
-	private int ranktime;
+	
+	int ranktime;
+	
 
 	public CourseResultSkin(Resolution src, Resolution dst) {
 		super(src, dst);
@@ -26,5 +23,6 @@ public class CourseResultSkin extends Skin {
 	public void setRankTime(int ranktime) {
 		this.ranktime = ranktime;
 	}
-
+	
 }
+

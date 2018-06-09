@@ -37,7 +37,6 @@ public class MusicResult extends AbstractResult {
 	private float avgduration;
 
 	/**
-	 * �궭�궎�깱�꺍�궛�늽躍�
 	 */
 	private TimingDistribution timingDistribution;
 
@@ -54,16 +53,8 @@ public class MusicResult extends AbstractResult {
 		timingDistribution = new TimingDistribution(distRange);
 	}
 
-	public void create() {
-		final PlayerResource resource = main.getPlayerResource();
-		for(int i = 0;i < REPLAY_SIZE;i++) {
-			saveReplay[i] = main.getPlayDataAccessor().existsReplayData(resource.getBMSModel(),
-					resource.getPlayerConfig().getLnmode(), i) ? ReplayStatus.EXIST : ReplayStatus.NOT_EXIST ;			
-		}
 
-		setSound(SOUND_CLEAR, "clear.wav", SoundType.SOUND, false);
-		setSound(SOUND_FAIL, "fail.wav", SoundType.SOUND, false);
-		setSound(SOUND_CLOSE, "resultclose.wav", SoundType.SOUND, false);
+	public void createResult(PlayerResource resource) {
 
 		property = ResultKeyProperty.get(resource.getBMSModel().getMode());
 		if (property == null) {
@@ -365,7 +356,6 @@ public class MusicResult extends AbstractResult {
 				cscore.setClear(Failed.id);
 
 				boolean b = false;
-				// 餘뗣굤�겗�쎊�걣�걗�굥�졃�릦�겘totalnotes�굮BP�겓�뒥嶸쀣걲�굥
 				for (BMSModel m : resource.getCourseBMSModels()) {
 					if (b) {
 						cscore.setMinbp(cscore.getMinbp() + m.getTotalNotes());
@@ -448,23 +438,7 @@ public class MusicResult extends AbstractResult {
 
 	public int getJudgeCount(int judge, boolean fast) {
 		IRScoreData score = main.getPlayerResource().getScoreData();
-		if (score != null) {
-			switch (judge) {
-			case 0:
-				return fast ? score.getEpg() : score.getLpg();
-			case 1:
-				return fast ? score.getEgr() : score.getLgr();
-			case 2:
-				return fast ? score.getEgd() : score.getLgd();
-			case 3:
-				return fast ? score.getEbd() : score.getLbd();
-			case 4:
-				return fast ? score.getEpr() : score.getLpr();
-			case 5:
-				return fast ? score.getEms() : score.getLms();
-			}
-		}
-		return 0;
+		return scoreJudge(score, judge, fast);
 	}
 
 	@Override
@@ -621,19 +595,7 @@ public class MusicResult extends AbstractResult {
 		return super.getBooleanValue(id);
 	}
 
-	public int getImageIndex(int id) {
-		switch (id) {
-		case NUMBER_CLEAR:
-			final PlayerResource resource = main.getPlayerResource();
-			if (resource.getScoreData() != null) {
-				return resource.getScoreData().getClear();
-			}
-			return Integer.MIN_VALUE;
-		case NUMBER_TARGET_CLEAR:
-			return oldscore.getClear();
-		}
-		return super.getImageIndex(id);
-	}
+
 
 	public void executeClickEvent(int id, int arg) {
 		switch (id) {
