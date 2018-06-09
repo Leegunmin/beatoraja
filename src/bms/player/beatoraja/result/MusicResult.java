@@ -16,6 +16,7 @@ import bms.model.TimeLine;
 import bms.player.beatoraja.*;
 import bms.player.beatoraja.PlayerResource.PlayMode;
 import bms.player.beatoraja.input.BMSPlayerInputProcessor;
+import bms.player.beatoraja.input.keyData;
 import bms.player.beatoraja.ir.IRConnection;
 import bms.player.beatoraja.ir.IRResponse;
 import bms.player.beatoraja.select.MusicSelector;
@@ -36,7 +37,6 @@ public class MusicResult extends AbstractResult {
 	private float avgduration;
 
 	/**
-	 * �궭�궎�깱�꺍�궛�늽躍�123
 	 */
 	private TimingDistribution timingDistribution;
 
@@ -102,7 +102,7 @@ public class MusicResult extends AbstractResult {
 				main.getAudioProcessor().stop((Note) null);
 
 				BMSPlayerInputProcessor input = main.getInputProcessor();
-				input.resetKeyTime();
+				keyData.resetKeyTime();
 
 				if (resource.getCourseBMSModels() != null) {
 					if (resource.getGauge()[resource.getGrooveGauge().getType()]
@@ -140,11 +140,11 @@ public class MusicResult extends AbstractResult {
 					main.getPlayerResource().getPlayerConfig().setGauge(main.getPlayerResource().getOrgGaugeOption());
 					ResultKeyProperty.ResultKey key = null;
 					for (int i = 0; i < property.getAssignLength(); i++) {
-						if (property.getAssign(i) == ResultKeyProperty.ResultKey.REPLAY_DIFFERENT && input.getKeyState(i)) {
+						if (property.getAssign(i) == ResultKeyProperty.ResultKey.REPLAY_DIFFERENT && keyData.getKeyState(i)) {
 							key = ResultKeyProperty.ResultKey.REPLAY_DIFFERENT;
 							break;
 						}
-						if (property.getAssign(i) == ResultKeyProperty.ResultKey.REPLAY_SAME && input.getKeyState(i)) {
+						if (property.getAssign(i) == ResultKeyProperty.ResultKey.REPLAY_SAME && keyData.getKeyState(i)) {
 							key = ResultKeyProperty.ResultKey.REPLAY_SAME;
 							break;
 						}
@@ -189,8 +189,8 @@ public class MusicResult extends AbstractResult {
 			if (time > getSkin().getInput()) {
 				boolean ok = false;
 				for (int i = 0; i < property.getAssignLength(); i++) {
-					if (property.getAssign(i) != null && inputProcessor.checkIfKeyPressed(i)) {
-						inputProcessor.resetKeyTime(i);
+					if (property.getAssign(i) != null && keyData.checkIfKeyPressed(i)) {
+						keyData.resetKeyTime(i);
 						ok = true;
 					}
 				}
@@ -220,7 +220,7 @@ public class MusicResult extends AbstractResult {
 				}
 
 				for (int i = 0; i < MusicSelector.REPLAY; i++) {
-					if (inputProcessor.getNumberState(i + 1)) {
+					if (keyData.getNumberState(i + 1)) {
 						saveReplayData(i);
 						break;
 					}
@@ -356,7 +356,6 @@ public class MusicResult extends AbstractResult {
 				cscore.setClear(Failed.id);
 
 				boolean b = false;
-				// 餘뗣굤�겗�쎊�걣�걗�굥�졃�릦�겘totalnotes�굮BP�겓�뒥嶸쀣걲�굥1
 				for (BMSModel m : resource.getCourseBMSModels()) {
 					if (b) {
 						cscore.setMinbp(cscore.getMinbp() + m.getTotalNotes());

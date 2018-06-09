@@ -12,6 +12,7 @@ import bms.model.BMSModel;
 import bms.player.beatoraja.*;
 import bms.player.beatoraja.PlayerResource.PlayMode;
 import bms.player.beatoraja.input.BMSPlayerInputProcessor;
+import bms.player.beatoraja.input.keyData;
 import bms.player.beatoraja.ir.IRConnection;
 import bms.player.beatoraja.select.MusicSelector;
 import bms.player.beatoraja.skin.SkinType;
@@ -97,8 +98,8 @@ public class CourseResult extends AbstractResult {
 
 			boolean ok = false;
 			for(int i = 0; i < property.getAssignLength(); i++) {
-				if(property.getAssign(i) != null && input.checkIfKeyPressed(i)) {
-					input.resetKeyTime(i);
+				if(property.getAssign(i) != null && keyData.checkIfKeyPressed(i)) {
+					keyData.resetKeyTime(i);
 					ok = true;
 				}
 			}
@@ -117,7 +118,7 @@ public class CourseResult extends AbstractResult {
             }
 
             for (int i = 0; i < MusicSelector.REPLAY; i++) {
-                if (main.getInputProcessor().getNumberState(i+1)) {
+                if (keyData.getNumberState(i+1)) {
                     saveReplayData(i);
                     break;
                 }
