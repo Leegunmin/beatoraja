@@ -17,11 +17,14 @@ import static bms.player.beatoraja.skin.SkinProperty.OPTION_REPLAYDATA_SAVED;
 import bms.player.beatoraja.IRScoreData;
 import bms.player.beatoraja.MainController;
 import bms.player.beatoraja.MainState;
+import bms.player.beatoraja.PlayerResource;
+import bms.player.beatoraja.MainState.SoundType;
+import bms.player.beatoraja.result.AbstractResult.ReplayStatus;
 
 public abstract class AbstractResult extends MainState {
 
 	/**
-	 * 状態
+	 * �듁�뀑
 	 */
 	protected int state;
 
